@@ -56,6 +56,31 @@ const loadSampleData = async () => {
                 input: chunk,
                 encoding_format: 'float'
             })
+
+            const vector  = embedding.data[0].embedding;
+
+            const res = await collection.insertOne({
+                $vector: vector,
+                text: chunk
+            });
+
+            console.log(res);
         }
     }
+}
+
+const scrapePage = async (url: string) => {
+    const loader = new PuppeteerWebBaseLoader( url, { 
+        launchOptions: {
+            headless: true 
+        },
+        gotoOptions: {
+            waitUntil: "domcontentloaded"
+        },
+        evaluate: async ( page, browser ) => {
+            const result = await page.evaluate(() => document.body.innerHTML);
+            await browser.close();
+            return result;
+        }
+    });
 }
