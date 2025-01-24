@@ -6,6 +6,8 @@ import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 
 import "dotenv/config";
 
+type SimilarityMetric = "dot_product" | "cosine" | "euclidean"
+
 const { ASTRA_DB_NAMESPACE, 
         ASTRA_DB_COLLECTION, 
         ASTRA_DB_API_ENDPOINT, 
@@ -15,3 +17,45 @@ const { ASTRA_DB_NAMESPACE,
 
 const openai = new OpenAI({ apiKey : OPENAI_API_KEY});
 
+const cricketData = [
+    'https://www.esquire.com.au/richest-highest-paid-cricket-players/',
+    'https://en.wikipedia.org/wiki/Cricket_in_India',
+    'https://en.wikipedia.org/wiki/Twenty20',
+    'https://en.wikipedia.org/wiki/Cricket_in_Australia',
+    'https://en.wikipedia.org/wiki/Major_League_Cricket',
+    'https://en.wikipedia.org/wiki/Cricket'
+];
+
+const client = new DataAPIClient(ASTRA_DB_APPLICATION_TOKEN);
+const db = client.db(ASTRA_DB_API_ENDPOINT, { namespace: ASTRA_DB_NAMESPACE }); 
+
+const splitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 512,
+    chunkOverlap: 100
+});
+
+const createCollection = async (similarityMetric: SimilarityMetric = "dot_product") => {
+    const res = await db.createCollection(ASTRA_DB_COLLECTION, {
+        vector: {
+            dimension: 1536,
+            metric: similarityMetric
+        }
+    });
+
+    console.log(res);
+}
+
+const loadSampleData = async () => {
+    const collection = await db.collection(ASTRA_DB_COLLECTION);
+    for await (const url of cricketData) {
+        const content = await scrapePage(url);
+        const chunks = await splitter.splitText(content);
+        for await (const chunk of chunks) {
+            const embedding = await openai.embeddings.create({
+                model: "text-embedding-ada-002",
+                input: chunk,
+                encoding_format: 'float'
+            })
+        }
+    }
+}
