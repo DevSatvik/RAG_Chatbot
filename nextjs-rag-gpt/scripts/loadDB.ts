@@ -83,4 +83,7 @@ const scrapePage = async (url: string) => {
             return result;
         }
     });
+    return (await loader.scrape())?.replace(/<[^>]*>?/gm, '');
 }
+
+createCollection().then(() => loadSampleData());
