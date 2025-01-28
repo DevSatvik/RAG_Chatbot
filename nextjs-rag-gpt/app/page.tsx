@@ -17,7 +17,7 @@ const Home = () => {
     const noMessages = false;  
 
     return (
-    <section className='bg-[#E8E8E8] flex flex-col items-center justify-between h-4/6 w-fit rounded-lg p-6 shadow-lg'>
+    <section className='bg-[#E8E8E8] flex flex-col items-center justify-between h-4/6 w-7/12 rounded-lg p-6 shadow-lg'>
         <Image src={crickgptLogo} width="250" alt='CrickGPT Logo' priority className=''/>
         <section className={noMessages ? '' : 'populated'}>
             {noMessages ? (
@@ -32,6 +32,7 @@ const Home = () => {
             ) : (
                 <>
                 {/* map message onto text bubbles */}
+                {messages.map((message, index) => <Bubble key={`message-${index}`} message={message} />)}
                 {isLoading && <LoadingBubble />}
                 </>
             )}
