@@ -14,7 +14,17 @@ import Bubble from './components/Bubble';
 const Home = () => {
     const { handleInputChange, handleSubmit, input, append, isLoading, messages } = useChat();
     
-    const noMessages = false;  
+    const noMessages = !messages || messages.length === 0;  
+
+    const handlePrompt = (promptText ) => {
+        console.log(promptText);
+        const message: Message = {
+            id: crypto.randomUUID(),
+            content: promptText,
+            role: "user"
+        }
+        append(message);
+    }
 
     return (
     <section className='bg-[#E8E8E8] flex flex-col items-center justify-between h-4/6 w-7/12 rounded-lg p-6 shadow-lg'>
@@ -27,7 +37,7 @@ const Home = () => {
                         It will come back with the most up to date answers. Enjoy!
                     </p>
                     <br />
-                    <PromptSuggestionsRow />
+                    <PromptSuggestionsRow onPromptClick={handlePrompt}/>
                 </>
             ) : (
                 <>
