@@ -10,7 +10,7 @@ const PromptSuggestionsRow = ({ onPromptClick }) => {
         "Who is the best cricket umpire?",
     ];
     return (
-    <div className=''>
+    <div className='w-full'>
         {prompts.map((prompt, index) => 
             <PromptSuggestionsButton 
                 key={`suggestion-${index}`} 
