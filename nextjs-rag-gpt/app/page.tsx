@@ -7,16 +7,19 @@ import { useChat } from 'ai/react';
 import { Message } from 'ai';
 
 import React from 'react'
+import PromptSuggestionsRow from './components/PromptSuggestionsRow';
+import LoadingBubble from './components/LoadingBubble';
+import Bubble from './components/Bubble';
 
 const Home = () => {
     const { handleInputChange, handleSubmit, input, append, isLoading, messages } = useChat();
     
-    const noMessages = true;  
+    const noMessages = false;  
 
     return (
     <section className='bg-[#E8E8E8] flex flex-col items-center justify-between h-4/6 w-fit rounded-lg p-6 shadow-lg'>
         <Image src={crickgptLogo} width="250" alt='CrickGPT Logo' priority className=''/>
-        <section className={noMessages ? '' : ''}>
+        <section className={noMessages ? '' : 'populated'}>
             {noMessages ? (
                 <>
                     <p className='text-center text-gray-700 px-8 py-2'>
@@ -24,12 +27,12 @@ const Home = () => {
                         It will come back with the most up to date answers. Enjoy!
                     </p>
                     <br />
-                    {/* <PromptSuggestionsRow /> */}
+                    <PromptSuggestionsRow />
                 </>
             ) : (
                 <>
                 {/* map message onto text bubbles */}
-                {/* <LoadingBubble /> */}
+                {isLoading && <LoadingBubble />}
                 </>
             )}
         </section>

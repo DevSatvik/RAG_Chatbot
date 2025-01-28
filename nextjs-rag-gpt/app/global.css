@@ -5,3 +5,20 @@
 body {
     @apply bg-slate-900
 }
+
+.gradient-background {
+    background: 
+        no-repeat radial-gradient(circle closest-side, #383838 90%, transparent) 0 50%,
+        no-repeat radial-gradient(circle closest-side, #383838 90%, transparent) 50% 50%,
+        no-repeat radial-gradient(circle closest-side, #383838 90%, transparent) 100% 50%;
+
+    background-size: calc(100%/3) 100%;
+    animation: loading 1s infinite linear;
+}
+
+@keyframes loading {
+    33% {background-size: calc(100%/3) 0%, calc(100%/3) 100%, calc(100%/3) 100%;}
+    50% {background-size: calc(100%/3) 100%, calc(100%/3) 0%, calc(100%/3) 100%;}
+    66% {background-size: calc(100%/3) 100%, calc(100%/3) 100%, calc(100%/3) 0%;}
+}
+
