@@ -24,7 +24,7 @@ const Home = () => {
                         It will come back with the most up to date answers. Enjoy!
                     </p>
                     <br />
-                    {/* <PromptSuggestionRow /> */}
+                    {/* <PromptSuggestionsRow /> */}
                 </>
             ) : (
                 <>
